@@ -111,7 +111,7 @@ export default function CompanyDetailPage() {
       <div className="mt-6 flex items-center gap-4 text-[var(--text-body-xs)] text-[var(--color-cool-gray)]">
         <div className="flex items-center gap-1">
           <Calendar className="h-4 w-4" />
-          Last updated: {company.lastUpdated}
+          Last updated: 2025-01-07
         </div>
         <div className="flex items-center gap-1">
           <Database className="h-4 w-4" />
