@@ -58,7 +58,7 @@ export function MetricCard({ label, data, tooltip }: MetricCardProps) {
           return (
             <div
               key={i}
-              className="flex-1 bg-[var(--color-soft-teal)] rounded-t transition-all"
+              className="flex-1 bg-[var(--color-blue-600)] dark:bg-[var(--color-soft-teal)] rounded-t transition-all"
               style={{ height: `${Math.max(height, 10)}%` }}
             />
           );
