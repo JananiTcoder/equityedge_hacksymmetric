@@ -10,8 +10,7 @@ import { useThemeContext } from "@/components/theme-provider";
 
 const navLinks = [
   { href: "/market-statistics", label: "Market Statistics" },
-  { href: "/company/search", label: "Search Companies" },
-  { href: "/learn", label: "Learn" },
+  { href: "/company/search", label: "Search Companies" }
 ];
 
 export function Navbar() {
