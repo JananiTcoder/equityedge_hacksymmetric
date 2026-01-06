@@ -252,29 +252,6 @@ function HeroHeader() {
                   ))}
                 </ul>
               </div>
-
-              {/* Auth Buttons */}
-              <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                <Button
-                  asChild
-                  variant="ghost"
-                  size="sm"
-                  className="text-white hover:bg-white/10 border border-white/20 lg:border-white/30"
-                >
-                  <Link href="#">
-                    <span>Login</span>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  className="bg-white text-black hover:bg-white/90"
-                >
-                  <Link href="#">
-                    <span>Sign Up</span>
-                  </Link>
-                </Button>
-              </div>
             </div>
           </motion.div>
         </div>
