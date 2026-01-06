@@ -77,3 +77,4 @@ export function MetricCard({ label, data, tooltip }: MetricCardProps) {
 
   return content;
 }
+
