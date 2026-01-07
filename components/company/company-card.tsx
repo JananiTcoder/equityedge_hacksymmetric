@@ -1,162 +1,149 @@
 "use client";
 
+/* -------------------- IMPORTS MUST COME FIRST -------------------- */
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { Card } from "@/components/ui/card";
+import { ArrowLeft, Building2, Calendar, Database } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 
-/* ---------------------------------------------
-   HARD-CODED COMPANY DATA (10 COMPANIES)
---------------------------------------------- */
+import { MetricCard } from "@/components/company";
+import { RatioCard, RatioEducationModal } from "@/components/ratios";
 
-const companies = [
-  {
-    id: "tcs",
-    name: "Tata Consultancy Services",
-    ticker: "TCS",
-    exchange: "NSE",
-    sector: "Technology",
-    industry: "IT Services",
-    logo: "tcs.png",
-  },
-  {
-    id: "infosys",
-    name: "Infosys",
-    ticker: "INFY",
-    exchange: "NSE",
-    sector: "Technology",
-    industry: "IT Services",
-    logo: "infosys.png",
-  },
-  {
-    id: "wipro",
-    name: "Wipro",
-    ticker: "WIPRO",
-    exchange: "NSE",
-    sector: "Technology",
-    industry: "IT Services",
-    logo: "wipro.png",
-  },
-  {
-    id: "hcltech",
-    name: "HCL Technologies",
-    ticker: "HCLTECH",
-    exchange: "NSE",
-    sector: "Technology",
-    industry: "IT Services",
-    logo: "hcl.png",
-  },
-  {
-    id: "hdfcbank",
-    name: "HDFC Bank",
-    ticker: "HDFCBANK",
-    exchange: "NSE",
-    sector: "Banking",
-    industry: "Private Bank",
-    logo: "hdfc.png",
-  },
-  {
-    id: "icicibank",
-    name: "ICICI Bank",
-    ticker: "ICICIBANK",
-    exchange: "NSE",
-    sector: "Banking",
-    industry: "Private Bank",
-    logo: "icici.png",
-  },
-  {
-    id: "sbin",
-    name: "State Bank of India",
-    ticker: "SBIN",
-    exchange: "NSE",
-    sector: "Banking",
-    industry: "Public Bank",
-    logo: "sbi.png",
-  },
-  {
-    id: "kotakbank",
-    name: "Kotak Mahindra Bank",
-    ticker: "KOTAKBANK",
-    exchange: "NSE",
-    sector: "Banking",
-    industry: "Private Bank",
-    logo: "kotak.png",
-  },
-  {
-    id: "reliance",
-    name: "Reliance Industries",
-    ticker: "RELIANCE",
-    exchange: "NSE",
-    sector: "Oil & Gas",
-    industry: "Integrated Oil & Gas",
-    logo: "reliance.png",
-  },
-  {
-    id: "ongc",
-    name: "Oil & Natural Gas Corporation",
-    ticker: "ONGC",
-    exchange: "NSE",
-    sector: "Oil & Gas",
-    industry: "Oil Exploration",
-    logo: "ongc.png",
-  },
-];
+import { CompanyFundamentals, FinancialRatio } from "@/types";
 
-/* ---------------------------------------------
-   COMPONENT
---------------------------------------------- */
+/* -------------------- COMPONENT -------------------- */
+export default function CompanyDetailPage() {
+  const params = useParams();
+  const ticker = params.ticker as string;
 
-export function CompanyCard() {
+  const [company, setCompany] = useState<CompanyFundamentals | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedRatio, setSelectedRatio] = useState<FinancialRatio | null>(null);
+
+  useEffect(() => {
+    async function fetchCompany() {
+      try {
+        const res = await fetch(`/api/companies/${ticker}`);
+        if (res.ok) {
+          const data = await res.json();
+          setCompany(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch company:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchCompany();
+  }, [ticker]);
+
+  /* -------------------- LOADING -------------------- */
+  if (loading) {
+    return (
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <Skeleton className="h-8 w-48 mb-6" />
+        <Skeleton className="h-12 w-96 mb-4" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <Skeleton key={i} className="h-32" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  /* -------------------- NOT FOUND -------------------- */
+  if (!company) {
+    return (
+      <div className="max-w-7xl mx-auto px-6 py-12 text-center">
+        <h1 className="text-2xl font-bold">Company not found</h1>
+        <Button asChild className="mt-4">
+          <Link href="/company/search">Back to Search</Link>
+        </Button>
+      </div>
+    );
+  }
+
+  /* -------------------- MAIN UI -------------------- */
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {companies.map((company, index) => (
-        <motion.div
-          key={company.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: index * 0.05 }}
-        >
-          <Link href={`/company/${company.id}`}>
-            <Card variant="elevated" className="p-5 group cursor-pointer">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-4">
-                  {/* LOGO ONLY */}
-                  <div className="w-12 h-12 rounded-lg bg-white flex items-center justify-center overflow-hidden border">
-                    <img
-                      src={`/logos/${company.logo}`}
-                      alt={`${company.name} logo`}
-                      className="h-10 w-10 object-contain"
-                    />
-                  </div>
+    <div className="max-w-7xl mx-auto px-6 py-12">
+      <Link
+        href="/company/search"
+        className="inline-flex items-center gap-2 mb-8 text-gray-500 hover:text-teal-600"
+      >
+        <ArrowLeft className="h-4 w-4" />
+        Back to Search
+      </Link>
 
-                  {/* TEXT */}
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="font-semibold text-[var(--color-deep-navy)] group-hover:text-[var(--color-muted-teal)] transition-colors">
-                        {company.name}
-                      </h3>
-                      <Badge variant="outline" size="sm">
-                        {company.exchange}:{company.ticker}
-                      </Badge>
-                    </div>
-                    <div className="mt-1 flex items-center gap-3">
-                      <Badge variant="blue" size="sm">
-                        {company.sector}
-                      </Badge>
-                      <span className="text-xs text-[var(--color-cool-gray)]">
-                        {company.industry}
-                      </span>
-                    </div>
-                  </div>
-                </div>
+      <div className="flex items-start gap-4">
+        <div className="w-16 h-16 rounded-xl bg-teal-100 flex items-center justify-center">
+          <Building2 className="h-8 w-8 text-teal-600" />
+        </div>
 
-                <ArrowRight className="h-5 w-5 text-[var(--color-surface-muted)] group-hover:text-[var(--color-muted-teal)] group-hover:translate-x-1 transition-all" />
-              </div>
-            </Card>
-          </Link>
-        </motion.div>
-      ))}
+        <div>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold">{company.name}</h1>
+            <Badge variant="outline">
+              {company.exchange}:{company.ticker}
+            </Badge>
+          </div>
+
+          <div className="mt-2 flex gap-3">
+            <Badge variant="blue">{company.sector}</Badge>
+            <span className="text-sm text-gray-500">{company.industry}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 flex gap-6 text-xs text-gray-500">
+        <div className="flex items-center gap-1">
+          <Calendar className="h-4 w-4" />
+          Last updated: 2025-01-07
+        </div>
+        <div className="flex items-center gap-1">
+          <Database className="h-4 w-4" />
+          Source: {company.dataSource}
+        </div>
+      </div>
+
+      <Tabs defaultValue="fundamentals" className="mt-8">
+        <TabsList>
+          <TabsTrigger value="fundamentals">Key Metrics</TabsTrigger>
+          <TabsTrigger value="ratios">Financial Ratios</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="fundamentals">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <MetricCard label="Revenue" data={company.revenue} />
+            <MetricCard label="Net Profit" data={company.netProfit} />
+            <MetricCard label="Debt to Equity" data={company.debtToEquity} />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="ratios">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {company.ratios.map((ratio) => (
+              <RatioCard
+                key={ratio.id}
+                ratio={ratio}
+                onLearnMore={setSelectedRatio}
+              />
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      <RatioEducationModal
+        ratio={selectedRatio}
+        isOpen={selectedRatio !== null}
+        onClose={() => setSelectedRatio(null)}
+      />
     </div>
   );
 }
