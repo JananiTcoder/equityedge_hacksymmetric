@@ -1,10 +1,9 @@
-// types.ts
 export interface Company {
   id: string;
   name: string;
-  ticker: string;
   exchange: string;
+  ticker: string;
   sector: string;
   industry: string;
-  logo?: string; // ← add this
+  logo?: string; // ✅ ADD THIS LINE
 }
