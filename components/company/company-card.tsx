@@ -28,9 +28,9 @@ export function CompanyCard({ company, index = 0 }: CompanyCardProps) {
             <div className="flex items-start gap-4">
               {/* Icon */}
               <div className="w-12 h-12 rounded-[var(--radius-lg)] bg-[var(--color-soft-teal)] flex items-center justify-center flex-shrink-0 overflow-hidden">
-  {company.logo ? (
+  {company?.logo ? (
     <img
-      src={company.logo}
+      src={company.logo as string}
       alt={`${company.name} logo`}
       className="h-8 w-8 object-contain"
     />
