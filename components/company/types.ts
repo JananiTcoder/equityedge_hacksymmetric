@@ -1,9 +1,22 @@
 export interface Company {
   id: string;
   name: string;
-  exchange: string;
   ticker: string;
+  exchange: "NSE" | "BSE";
   sector: string;
   industry: string;
-  logo?: string; // ✅ ADD THIS LINE
+  description?: string;
+  logo?: string; // this must exist
+}
+
+export interface CompanyFundamentals extends Company {
+  revenue: MetricData;
+  netProfit: MetricData;
+  profitMargin: MetricData;
+  debtToEquity: MetricData;
+  operatingCashFlow: MetricData;
+  cashReserves: MetricData;
+  ratios: FinancialRatio[];
+  lastUpdated: string;
+  dataSource: string;
 }
