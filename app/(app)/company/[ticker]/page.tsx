@@ -19,6 +19,28 @@ export default function CompanyDetailPage() {
   const [company, setCompany] = useState<CompanyFundamentals | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedRatio, setSelectedRatio] = useState<FinancialRatio | null>(null);
+import { CompanyFundamentals } from "@/types";
+
+const companies: CompanyFundamentals[] = [
+  {
+    id: "aapl",
+    name: "Apple",
+    ticker: "AAPL",
+    exchange: "NSE",
+    sector: "Technology",
+    industry: "Consumer Electronics",
+    logo: "aapl.png", // ✅ THIS WAS MISSING
+    revenue: {...},
+    netProfit: {...},
+    profitMargin: {...},
+    debtToEquity: {...},
+    operatingCashFlow: {...},
+    cashReserves: {...},
+    ratios: [],
+    lastUpdated: "2025-01-07",
+    dataSource: "NSE",
+  },
+];
 
   useEffect(() => {
     async function fetchCompany() {
