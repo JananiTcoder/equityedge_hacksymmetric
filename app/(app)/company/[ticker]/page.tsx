@@ -81,9 +81,18 @@ export default function CompanyDetailPage() {
 
       {/* Header */}
       <div className="flex items-start gap-4">
-        <div className="w-16 h-16 rounded-[var(--radius-xl)] bg-[var(--color-soft-teal)] flex items-center justify-center flex-shrink-0">
-          <Building2 className="h-8 w-8 text-[var(--color-muted-teal)]" />
-        </div>
+        <div className="w-16 h-16 rounded-[var(--radius-xl)] bg-[var(--color-soft-teal)] flex items-center justify-center flex-shrink-0 overflow-hidden">
+  {company.logo ? (
+    <img
+      src={`/logos/${company.logo}`}
+      alt={`${company.name} logo`}
+      className="h-12 w-12 object-contain"
+    />
+  ) : (
+    <Building2 className="h-8 w-8 text-[var(--color-muted-teal)]" />
+  )}
+</div>
+
         <div>
           <div className="flex items-center gap-3">
             <h1 className="text-[var(--text-display-sm)] font-bold text-[var(--color-deep-navy)]">
