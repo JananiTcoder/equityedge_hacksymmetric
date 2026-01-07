@@ -29,11 +29,11 @@ export function CompanyCard({ company, index = 0 }: CompanyCardProps) {
               {/* Icon */}
               <div className="w-12 h-12 rounded-[var(--radius-lg)] bg-[var(--color-soft-teal)] flex items-center justify-center flex-shrink-0 overflow-hidden">
   {company?.logo ? (
-    <img
-      src={company.logo as string}
-      alt={`${company.name} logo`}
-      className="h-8 w-8 object-contain"
-    />
+<img
+  src={`/logos/${company.logo}`}
+  alt={`${company.name} logo`}
+  className="h-8 w-8 object-contain"
+/>
   ) : (
     <Building2 className="h-6 w-6 text-[var(--color-muted-teal)]" />
   )}
