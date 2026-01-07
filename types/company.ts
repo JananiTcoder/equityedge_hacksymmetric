@@ -6,6 +6,7 @@ export interface Company {
   sector: string;
   industry: string;
   description?: string;
+  logo?: string;
 }
 
 export interface MetricData {
