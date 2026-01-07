@@ -141,7 +141,31 @@ const chatConfig: ChatConfig = {
 
 export function AIShowcaseScroll() {
   return (
-    <section className="bg-gradient-to-b from-[var(--color-background)] to-[var(--color-surface)]">
+    <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--color-surface)_0%,_var(--color-background)_60%)]">
+
+      {/* 🔹 Animated AI / Market background (ADD HERE) */}
+      <motion.div
+        className="pointer-events-none absolute inset-0"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
+        {/* Horizontal data wave */}
+        <motion.div
+          className="absolute top-1/2 left-[-20%] w-[140%] h-[2px] bg-gradient-to-r from-transparent via-[var(--color-accent)] to-transparent opacity-20"
+          animate={{ x: [0, 80, 0] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        />
+
+        {/* Vertical signal line */}
+        <motion.div
+          className="absolute left-1/2 top-[-20%] h-[140%] w-[1px] bg-gradient-to-b from-transparent via-[var(--color-soft-teal)] to-transparent opacity-20"
+          animate={{ y: [0, 60, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </motion.div>
+
+      {/* 🔹 Main content (goes ABOVE background) */}
       <ContainerScroll
         titleComponent={
           <>
@@ -153,16 +177,19 @@ export function AIShowcaseScroll() {
             >
               AI-Powered Learning
             </motion.span>
+
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text-primary)] mb-4">
               Learn Financial Concepts <br />
               <span className="text-[var(--color-accent)]">
                 Like Never Before
               </span>
             </h2>
+
             <p className="text-lg text-[var(--color-text-muted)] max-w-2xl mx-auto mb-2">
               Our AI assistant explains complex financial concepts in simple terms.
               Ask anything, learn everything—no jargon, just clarity.
             </p>
+
             <Link
               href="/ai-assistant"
               className="inline-flex items-center gap-2 text-[var(--color-accent)] font-medium hover:underline"
@@ -173,9 +200,13 @@ export function AIShowcaseScroll() {
           </>
         }
       >
-        <div className="flex items-center justify-center h-full w-full bg-[#0a1628] rounded-lg overflow-hidden">
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          transition={{ type: "spring", stiffness: 120, damping: 15 }}
+          className="flex items-center justify-center h-full w-full bg-[#0a1628]/80 backdrop-blur-md rounded-xl border border-white/10 shadow-[0_0_40px_rgba(0,180,216,0.15)]"
+        >
           <ChatComponent config={chatConfig} uiConfig={uiConfig} />
-        </div>
+        </motion.div>
       </ContainerScroll>
     </section>
   );
